@@ -74,4 +74,20 @@ class StringCalculatorTest extends TestCase
 
         $calculator->add('//;\n1;-3;4');
     }
+
+    /** @test */
+    public function itShouldIgnoreNumbersLargerThan1000(): void
+    {
+        $result1 = $this->stringCalculator->add('2,1001');
+        $result2 = $this->stringCalculator->add('2,1001,1002,1100,1500');
+        $result3 = $this->stringCalculator->add('//$\n1$2$9999');
+        $result4 = $this->stringCalculator->add('//@\n2@3@1100');
+        $result5 = $this->stringCalculator->add('//@\n2@\n3@1111');
+
+        self::assertSame(2, $result1);
+        self::assertSame(2, $result2);
+        self::assertSame(3, $result3);
+        self::assertSame(5, $result4);
+        self::assertSame(5, $result5);
+    }
 }

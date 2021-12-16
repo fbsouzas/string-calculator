@@ -24,6 +24,7 @@ final class StringCalculator
         }
 
         $numbers = str_replace('\n', ' ', $numbers);
+        $numbers = preg_replace('/100[1-9]|10[1-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-9][0-9]{4,}/', '', $numbers);
 
         if (str_contains($numbers, '-')) {
             throw new NegativesNotAllowedException('Negatives not allowed [' . $numbers . ']');
