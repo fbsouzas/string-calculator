@@ -1,0 +1,30 @@
+{
+    "authors": [
+        {
+            "name": "Fabio Souza",
+            "email": "fsouza.me@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^6.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6",
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^1.2",
+        "phpmd/phpmd": "^2.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fbsouzas\\StringCalculator\\": "./src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fbsouzas\\StringCalculator\\Tests\\": "./tests"
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit"
+    }
+}
