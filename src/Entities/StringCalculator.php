@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Fbsouzas\StringCalculator\Entities;
 
+use Fbsouzas\StringCalculator\Exceptions\NegativesNotAllowedException;
+
 final class StringCalculator
 {
     public function add(string $numbers): int
@@ -22,6 +24,10 @@ final class StringCalculator
         }
 
         $numbers = str_replace('\n', ' ', $numbers);
+
+        if (str_contains($numbers, '-')) {
+            throw new NegativesNotAllowedException('Negatives not allowed [' . $numbers . ']');
+        }
 
         return array_sum(preg_split("/[\{$delimiter}]+/", $numbers));
     }

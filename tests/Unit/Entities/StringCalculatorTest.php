@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Fbsouzas\StringCalculator\Tests\Entities;
 
 use Fbsouzas\StringCalculator\Entities\StringCalculator;
+use Fbsouzas\StringCalculator\Exceptions\NegativesNotAllowedException;
 use PHPUnit\Framework\TestCase;
 
 class StringCalculatorTest extends TestCase
@@ -62,5 +63,15 @@ class StringCalculatorTest extends TestCase
         self::assertSame(6, $result2);
         self::assertSame(13, $result3);
         self::assertSame(14, $result4);
+    }
+
+    /** @test */
+    public function itShouldThrowANegativesNotAllowedException(): void
+    {
+        $this->expectException(NegativesNotAllowedException::class);
+
+        $calculator = new StringCalculator();
+
+        $calculator->add('//;\n1;-3;4');
     }
 }
