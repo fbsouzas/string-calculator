@@ -12,6 +12,6 @@ final class StringCalculator
             return 0;
         }
 
-        return (int) $numbers;
+        return array_sum(explode(',', $numbers));
     }
 }

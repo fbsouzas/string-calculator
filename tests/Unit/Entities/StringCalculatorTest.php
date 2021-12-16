@@ -9,12 +9,17 @@ use PHPUnit\Framework\TestCase;
 
 class StringCalculatorTest extends TestCase
 {
+    private StringCalculator $stringCalculator;
+
+    public function setUp(): void
+    {
+        $this->stringCalculator = new StringCalculator();
+    }
+
     /** @test */
     public function itShouldReturnZero(): void
     {
-        $stringCalculator = new StringCalculator();
-
-        $result = $stringCalculator->add('');
+        $result = $this->stringCalculator->add('');
 
         self::assertSame(0, $result);
     }
@@ -22,10 +27,16 @@ class StringCalculatorTest extends TestCase
     /** @test */
     public function itShouldReturnAnInteger(): void
     {
-        $stringCalculator = new StringCalculator();
-
-        $result = $stringCalculator->add('3');
+        $result = $this->stringCalculator->add('3');
 
         self::assertIsInt($result);
+    }
+
+    /** @test */
+    public function itShouldCalculateTheString(): void
+    {
+        $result = $this->stringCalculator->add('1, 2, 5');
+
+        self::assertSame(8, $result);
     }
 }
