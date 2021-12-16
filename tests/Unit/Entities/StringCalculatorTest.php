@@ -69,10 +69,11 @@ class StringCalculatorTest extends TestCase
     public function itShouldThrowANegativesNotAllowedException(): void
     {
         $this->expectException(NegativesNotAllowedException::class);
+        $this->expectExceptionMessage('Negatives not allowed [-3, -9]');
 
         $calculator = new StringCalculator();
 
-        $calculator->add('//;\n1;-3;4');
+        $calculator->add('//;\n1;-3;4;-9');
     }
 
     /** @test */

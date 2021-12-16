@@ -27,7 +27,8 @@ final class StringCalculator
         $numbers = preg_replace('/100[1-9]|10[1-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-9][0-9]{4,}/', '', $numbers);
 
         if (str_contains($numbers, '-')) {
-            throw new NegativesNotAllowedException('Negatives not allowed [' . $numbers . ']');
+            $negativesNumbers = array_filter(preg_split("/[\{$delimiter}]+/", $numbers), fn (int $number) => $number < 0);
+            throw new NegativesNotAllowedException('Negatives not allowed [' . implode(', ', $negativesNumbers) . ']');
         }
 
         return array_sum(preg_split("/[\{$delimiter}]+/", $numbers));
