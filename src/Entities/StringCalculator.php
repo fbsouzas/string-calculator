@@ -34,7 +34,7 @@ final class StringCalculator
             );
         }
 
-        return array_sum($numbersSplitByDelimiter);
+        return (int) array_sum($numbersSplitByDelimiter);
     }
 
     private function hasCustomDelimiter(string $numbers): bool
@@ -44,7 +44,7 @@ final class StringCalculator
 
     private function getCustomDelimiter(string $numbers): string
     {
-        $positionCustomDelimiter = strpos($numbers, '\n');
+        $positionCustomDelimiter = (int) strpos($numbers, '\n');
 
         return str_replace(
             '//',
@@ -65,7 +65,7 @@ final class StringCalculator
 
     private function removeNumbersLargerThan1000(string $numbers): string
     {
-        return preg_replace(
+        return (string) preg_replace(
             '/100[1-9]|10[1-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-9][0-9]{4,}/',
             '',
             $numbers
@@ -77,11 +77,16 @@ final class StringCalculator
         return str_contains($numbers, '-');
     }
 
+    /**
+     * @param array<String> $numbers
+     * @return array<String>
+     */
     private function getNegativesNumbers(array $numbers): array
     {
         return array_filter($numbers, fn (int $number) => $number < 0);
     }
 
+    /** @return array<String> */
     private function splitNumbersByDelimiter(string $numbers, string $delimiter): array
     {
         return preg_split("/[\{$delimiter}]+/", $numbers);

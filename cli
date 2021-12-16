@@ -3,10 +3,11 @@
 
 require __DIR__.'/vendor/autoload.php';
 
+use Fbsouzas\StringCalculator\Commands\CalculateStringCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
 
-// ... register commands
+$application->add(new CalculateStringCommand());
 
 $application->run();
