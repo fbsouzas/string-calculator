@@ -8,6 +8,7 @@ use Fbsouzas\StringCalculator\Exceptions\NegativesNotAllowedException;
 
 final class StringCalculator
 {
+    /** @throws NegativesNotAllowedException */
     public function add(string $numbers): int
     {
         if ('' === $numbers) {
@@ -16,21 +17,73 @@ final class StringCalculator
 
         $delimiter = ',';
 
-        if (str_starts_with($numbers, '//')) {
-            $positionCustomDelimiter = strpos($numbers, '\n');
-            $splitNumbers = str_split($numbers, $positionCustomDelimiter);
-            $delimiter = str_replace('//', '', $splitNumbers[0]);
-            $numbers = str_replace('//' . $delimiter, '', $numbers);
+        if ($this->hasCustomDelimiter($numbers)) {
+            $delimiter = $this->getCustomDelimiter($numbers);
+            $numbers = $this->removeCustomDelimiterOfTheNumbers($delimiter, $numbers);
         }
 
-        $numbers = str_replace('\n', ' ', $numbers);
-        $numbers = preg_replace('/100[1-9]|10[1-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-9][0-9]{4,}/', '', $numbers);
+        $numbers = $this->removeNewLines($numbers);
+        $numbers = $this->removeNumbersLargerThan1000($numbers);
+        $numbersSplitByDelimiter = $this->splitNumbersByDelimiter($numbers, $delimiter);
 
-        if (str_contains($numbers, '-')) {
-            $negativesNumbers = array_filter(preg_split("/[\{$delimiter}]+/", $numbers), fn (int $number) => $number < 0);
-            throw new NegativesNotAllowedException('Negatives not allowed [' . implode(', ', $negativesNumbers) . ']');
+        if ($this->hasNegativesNumbers($numbers)) {
+            $negativesNumbers = $this->getNegativesNumbers($numbersSplitByDelimiter);
+
+            throw new NegativesNotAllowedException(
+                'Negatives not allowed [' . implode(', ', $negativesNumbers) . ']'
+            );
         }
 
-        return array_sum(preg_split("/[\{$delimiter}]+/", $numbers));
+        return array_sum($numbersSplitByDelimiter);
+    }
+
+    private function hasCustomDelimiter(string $numbers): bool
+    {
+        return str_starts_with($numbers, '//');
+    }
+
+    private function getCustomDelimiter(string $numbers): string
+    {
+        $positionCustomDelimiter = strpos($numbers, '\n');
+
+        return str_replace(
+            '//',
+            '',
+            str_split($numbers, $positionCustomDelimiter)[0]
+        );
+    }
+
+    private function removeCustomDelimiterOfTheNumbers(string $delimiter, string $numbers): string
+    {
+        return str_replace('//' . $delimiter, '', $numbers);
+    }
+
+    private function removeNewLines(string $numbers): string
+    {
+        return str_replace('\n', ' ', $numbers);
+    }
+
+    private function removeNumbersLargerThan1000(string $numbers): string
+    {
+        return preg_replace(
+            '/100[1-9]|10[1-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-9][0-9]{4,}/',
+            '',
+            $numbers
+        );
+    }
+
+    private function hasNegativesNumbers(string $numbers): bool
+    {
+        return str_contains($numbers, '-');
+    }
+
+    private function getNegativesNumbers(array $numbers): array
+    {
+        return array_filter($numbers, fn (int $number) => $number < 0);
+    }
+
+    private function splitNumbersByDelimiter(string $numbers, string $delimiter): array
+    {
+        return preg_split("/[\{$delimiter}]+/", $numbers);
     }
 }
