@@ -35,8 +35,18 @@ class StringCalculatorTest extends TestCase
     /** @test */
     public function itShouldCalculateTheString(): void
     {
-        $result = $this->stringCalculator->add('1, 2, 5');
+        $result = $this->stringCalculator->add('1,2,5');
 
         self::assertSame(8, $result);
+    }
+
+    /** @test */
+    public function itShouldHandleWithNewLinesInTheString(): void
+    {
+        $result1 = $this->stringCalculator->add('1\n,2,3');
+        $result2 = $this->stringCalculator->add('1,\n2,4');
+
+        self::assertSame(6, $result1);
+        self::assertSame(7, $result2);
     }
 }
