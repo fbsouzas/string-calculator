@@ -18,4 +18,14 @@ class StringCalculatorTest extends TestCase
 
         self::assertSame(0, $result);
     }
+
+    /** @test */
+    public function itShouldReturnAnInteger(): void
+    {
+        $stringCalculator = new StringCalculator();
+
+        $result = $stringCalculator->add('3');
+
+        self::assertIsInt($result);
+    }
 }
