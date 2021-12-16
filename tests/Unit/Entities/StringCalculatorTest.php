@@ -90,4 +90,16 @@ class StringCalculatorTest extends TestCase
         self::assertSame(5, $result4);
         self::assertSame(5, $result5);
     }
+
+    /** @test */
+    public function itShouldAllowArbitraryLengthDelimiters(): void
+    {
+        $result1 = $this->stringCalculator->add('//***\n1***2***3');
+        $result2 = $this->stringCalculator->add('//**\n1**2**3');
+        $result3 = $this->stringCalculator->add('//@@\n5@@2@@3');
+
+        self::assertSame(6, $result1);
+        self::assertSame(6, $result2);
+        self::assertSame(10, $result3);
+    }
 }
