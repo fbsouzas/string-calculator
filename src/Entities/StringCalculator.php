@@ -83,7 +83,7 @@ final class StringCalculator
      */
     private function getNegativesNumbers(array $numbers): array
     {
-        return array_filter($numbers, fn (int $number) => $number < 0);
+        return array_filter($numbers, fn (string $number) => $number < 0);
     }
 
     /** @return array<String> */
